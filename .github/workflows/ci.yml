@@ -1,0 +1,12 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  alejandra:
+    runs-on: ubuntu-24.05
+    steps:
+      - use: actions/checkout@v4
+      - use: cachix/install-nix-action@v22
+      - run: nix profile install nixpkgs#alejandra
+      - run: alejandra --check
+
