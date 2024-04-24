@@ -16,6 +16,7 @@
       system: let
         pkgs = import nixpkgs {
           inherit system;
+          config.allowUnfree = true;
         };
       in {
         devShell = pkgs.mkShell {
@@ -23,8 +24,9 @@
             nil
             alejandra
             sops
-            opentofu
+            terraform
             terraform-ls
+            yq-go
           ];
         };
       }
