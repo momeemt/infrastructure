@@ -13,7 +13,6 @@ jobs:
       - run: |
           mkdir -p ~/.config/sops/age
           echo "${{ secrets.SOPS_AGE_SECRET_KEY }}" > ~/.config/sops/age/keys.txt
-          chmod 600 ~/.config/sops/age/keys.txt
       - run: nix develop . --command "./secrets/build.sh"
         env:
           SOPS_AGE_KEY_FILE: ~/.config/sops/age/keys.txt
