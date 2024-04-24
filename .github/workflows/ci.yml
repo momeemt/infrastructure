@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 jobs:
   alejandra:
-    runs-on: ubuntu-24.05
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v22
