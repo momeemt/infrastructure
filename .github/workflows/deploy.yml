@@ -17,27 +17,26 @@ jobs:
           key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix') }}
       - if: "steps.nix-cache.outputs.cache-hit == 'true'"
         run: "nix-store --import < /tmp/nixcache"
+      - run: nix profile install ./#deploy-environment
       - name: Build credential files
         run: |
           mkdir -p ~/.config/sops/age
           echo $SOPS_AGE_SECRET_KEY > ~/.config/sops/age/keys.txt
-          chmod 777 ~/.config/sops/age/keys.txt
-          ls -la ~/.config/sops/age
-          nix develop . --command "./secrets/build.sh"
+          ./secrets/build.sh
         env:
           SOPS_AGE_SECRET_KEY: ${{ secrets.SOPS_AGE_SECRET_KEY }}
           SOPS_AGE_KEY_FILE: ~/.config/sops/age/keys.txt
-      - name: Debug
-        run: |
-          ls -la terraform
-          ls -la .
-          nix develop . --command "which terraform"
-          nix develop . --command "pwd && cd terraform"
-          nix develop . --command "pwd"
-      - run: nix develop . --command "bash -c 'cd terraform && terraform init -backend-config=backend.hcl'"
-      - run: nix develop . --command "cd terraform && terraform apply -auto-approve"
+      - run: |
+          cd terraform
+          terraform init -backend-config=backend.hcl
+          terraform apply -auto-approve
       - if: "always() && steps.nix-cache.outputs.cache-hit != 'true'"
         run: "nix-store --export $(find /nix/store -maxdepth 1 -name '*-*') > /tmp/nixcache"
+      - if: always()
+        uses: actions/cache@v4
+        with:
+          path: /tmp/nixcache
+          key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix') }}
       - name: Remove credential files
         if: always()
         run: |

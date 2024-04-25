@@ -19,6 +19,14 @@
           config.allowUnfree = true;
         };
       in {
+        packages.deploy-environment = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            terraform
+            sops
+            yq-go
+          ];
+        };
+
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
             nil
