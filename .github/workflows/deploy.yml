@@ -31,7 +31,7 @@ jobs:
         run: |
           ls -la terraform
           ls -la .
-      - run: nix develop . --command "cd terraform && terraform init -backend-config=backend.hcl"
+      - run: nix develop . --command "bash -c 'cd terraform && terraform init -backend-config=backend.hcl'"
       - run: nix develop . --command "cd terraform && terraform apply -auto-approve"
       - if: "always() && steps.nix-cache.outputs.cache-hit != 'true'"
         run: "nix-store --export $(find /nix/store -maxdepth 1 -name '*-*') > /tmp/nixcache"
