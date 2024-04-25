@@ -20,8 +20,8 @@ jobs:
         env:
           SOPS_AGE_SECRET_KEY: ${{ secrets.SOPS_AGE_SECRET_KEY }}
           SOPS_AGE_KEY_FILE: ~/.config/sops/age/keys.txt
-      - run: nix develop . --command "terraform init -backend-config=backend.hcl"
-      - run: nix develop . --command "terraform apply -auto-approve"
+      - run: nix develop . --command "cd terraform && terraform init -backend-config=backend.hcl"
+      - run: nix develop . --command "cd terraform && terraform apply -auto-approve"
       - name: Remove credential files
         if: always()
         run: |
