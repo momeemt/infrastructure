@@ -31,6 +31,9 @@ jobs:
         run: |
           ls -la terraform
           ls -la .
+          nix develop . --command "which terraform"
+          nix develop . --command "pwd && cd terraform"
+          nix develop . --command "pwd"
       - run: nix develop . --command "bash -c 'cd terraform && terraform init -backend-config=backend.hcl'"
       - run: nix develop . --command "cd terraform && terraform apply -auto-approve"
       - if: "always() && steps.nix-cache.outputs.cache-hit != 'true'"
