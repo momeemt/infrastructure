@@ -21,7 +21,8 @@ jobs:
       - name: Build credential files
         run: |
           mkdir -p ~/.config/sops/age
-          echo $SOPS_AGE_SECRET_KEY > ~/.config/sops/age/keys.txt
+          echo $SOPS_AGE_SECRET_KEY > $SOPS_AGE_KEY_FILE
+          chmod 755 $SOPS_AGE_KEY_FILE
           ./secrets/build.sh
         env:
           SOPS_AGE_SECRET_KEY: ${{ secrets.SOPS_AGE_SECRET_KEY }}
