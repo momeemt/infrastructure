@@ -14,10 +14,10 @@ jobs:
         id: nix-cache
         with:
           path: /tmp/nixcache
-          key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix') }}
+          key: nix-${{ runner.os }}-${{ hashFiles('**/flake.lock') }}
       - if: "steps.nix-cache.outputs.cache-hit == 'true'"
         run: "nix-store --import < /tmp/nixcache"
-      - run: nix profile install ./#deploy-environment
+      - run: nix profile install ".#deploy-environment"
       - name: Build credential files
         run: |
           mkdir -p ~/.config/sops/age
@@ -36,7 +36,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/nixcache
-          key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix') }}
+          key: nix-${{ runner.os }}-${{ hashFiles('**/flake.lock') }}
       - name: Remove credential files
         if: always()
         run: |

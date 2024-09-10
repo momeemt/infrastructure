@@ -19,8 +19,9 @@
           config.allowUnfree = true;
         };
       in {
-        packages.deploy-environment = pkgs.mkShell {
-          buildInputs = with pkgs; [
+        packages.deploy-environment = pkgs.buildEnv {
+          name = "deploy-environment";
+          paths = with pkgs; [
             terraform
             sops
             yq-go
