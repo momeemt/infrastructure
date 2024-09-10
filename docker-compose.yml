@@ -21,8 +21,11 @@ services:
     entrypoint: >
       /bin/sh -c "
       until (/usr/bin/mc config host add minio http://minio:9000 '${MINIO_ROOT_USER}' '${MINIO_ROOT_PASSWORD}') do sleep 1; done;
-      /usr/bin/mc mb minio/terraform-store;
-      /usr/bin/mc policy download minio/terraform-store;
+      /usr/bin/mc mb minio/terraform;
+      /usr/bin/mc policy download minio/terraform;
+      /usr/bin/mc admin user svcacct add minio '${MINIO_ROOT_USER}' \
+        --access-key '${MINIO_ACCESS_KEY}' \
+        --secret-key '${MINIO_SECRET_KEY}';
       exit 0;
       "
 
