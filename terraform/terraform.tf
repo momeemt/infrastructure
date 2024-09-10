@@ -4,6 +4,9 @@ terraform {
   backend "s3" {
     bucket = "terraform"
     key = "terraform.tfstate"
+    endpoints = {
+      s3 = "https://minio.momee.mt/"
+    }
   }
 }
 
