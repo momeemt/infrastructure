@@ -3,10 +3,14 @@ terraform {
 
   backend "s3" {
     bucket = "terraform"
-    key = "terraform.tfstate"
+    key    = "terraform.tfstate"
     endpoints = {
       s3 = "https://minio.momee.mt/"
     }
+    skip_credentials_validation = true
+    skip_metadata_api_check     = true
+    skip_region_validation      = true
+    force_path_style            = true
   }
 }
 
