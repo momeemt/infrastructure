@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v22
-      - uses: actions/cache@v4
+      - uses: actions/cache/restore@v4
         id: nix-cache
         with:
           path: /tmp/nixcache
@@ -31,8 +31,13 @@ jobs:
           cd terraform
           terraform init -backend-config=backend.hcl
           terraform apply -auto-approve
-      - if: "always() && steps.nix-cache.outputs.cache-hit != 'true'"
+      - if: "steps.nix-cache.outputs.cache-hit != 'true'"
         run: "nix-store --export $(find /nix/store -maxdepth 1 -name '*-*') > /tmp/nixcache"
+      - if: "steps.nix-cache.outputs.cache-hit != 'true'"
+        uses: actions/cache/save@v4
+        with:
+          path: /tmp/nixcache
+          key: nix-${{ runner.os }}-${{ hashFiles('flake.lock') }}
       - name: Remove credential files
         if: always()
         run: |
