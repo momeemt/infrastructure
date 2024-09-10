@@ -24,7 +24,7 @@ echo "export MINIO_SECRET_KEY='$MINIO_SECRET_KEY'" >> $ENVRC_PATH
 echo "export MINIO_PORT='$MINIO_PORT'" >> $ENVRC_PATH
 echo "export MINIO_CONSOLE_PORT='$MINIO_CONSOLE_PORT'" >> $ENVRC_PATH
 
-echo "endpoint = \"$TERRAFORM_ENDPOINT\"" > $BACKEND_HCL
+echo "endpoint.s3 = \"$TERRAFORM_ENDPOINT\"" > $BACKEND_HCL
 echo "region = \"$TERRAFORM_REGION\"" >> $BACKEND_HCL
 echo "access_key = \"$MINIO_ACCESS_KEY\"" >> $BACKEND_HCL
 echo "secret_key = \"$MINIO_SECRET_KEY\"" >> $BACKEND_HCL
