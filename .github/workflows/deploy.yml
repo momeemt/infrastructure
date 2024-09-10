@@ -41,6 +41,6 @@ jobs:
       - name: Remove credential files
         if: always()
         run: |
-          nix develop . --command "./secrets/remove.sh"
-          rm -f ~/.config/sops/keys.txt
+          ./secrets/remove.sh
+          rm -f .config/sops/keys.txt
 
